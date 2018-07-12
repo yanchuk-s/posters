@@ -3,12 +3,12 @@
     <div class="row">
       <div class="col-md-9">
         main
-       <div>{{selectedValue}}</div>
-       <div>{{modelHex}}</div>
-       <div> {{option}}</div>
+       <div>{{fontSize}}</div>
+       <div>{{fontColor}}</div>
+       <div> {{fontStyle}}</div>
        <div>{{checked}}</div>
         <div>{{selection}}</div>
-        <div>{{select}}</div>
+        <div>{{fontFamily}}</div>
         <div>{{area}}</div>
         <q-btn @click="showNot" color="primary" size="sm" label="notify" />
         <q-btn @click="showModal" color="primary" size="sm" label="modal" />
@@ -32,29 +32,28 @@
            <q-color
             color="amber-7"
             float-label="Float Label"
-            v-model="modelHex"
+            v-model="fontColor"
             />
          </div>
          <div class="col-md-12">
            <q-slider
-              v-model="selectedValue"
-              :min="0"
-              :max="10"
-              :step="2"
+              v-model="fontSize"
+              :min="10"
+              :max="80"
+              :step="1"
               label
               snap
             />
          </div>
          <div class="col-md-12">
                 <q-select
-                  v-model="select"
+                  v-model="fontFamily"
                   :options="selectOptions"
                 />
          </div>
          <div class="col-md-12">
-           <q-radio v-model="option" val="opt1" label="Option 1" />
-            <q-radio v-model="option" val="opt2" label="Option 2" />
-            <q-radio v-model="option" val="opt3" label="Option 3" />
+           <q-radio v-model="fontStyle" val="normal" label="Normal" />
+            <q-radio v-model="fontStyle" val="italic" label="Italic" />
          </div>
          <div class="col-md-12">
            <q-toggle v-model="checked" label="Toggle Label" />
@@ -101,21 +100,21 @@ export default{
     return {
       opened: false,
       input: '',
-      selectedValue: null,
-      modelHex: '#6FD124',
-      select: '',
-      option: '',
+      fontSize: '10',
+      fontColor: '#6FD124',
+      fontFamily: 'Roboto',
+      fontStyle: 'normal',
       checked: false,
       selection: ['one', 'two', 'three'],
       area: 'Some Text',
       selectOptions: [
         {
-          label: 'Google',
-          value: 'goog'
+          label: 'Roboto',
+          value: 'Roboto'
         },
         {
-          label: 'Facebook',
-          value: 'fb'
+          label: 'Colibri',
+          value: 'Colibri'
         }
       ]
     }
@@ -128,12 +127,11 @@ export default{
       let _this = this
       imageObj.onload = function () {
         context.drawImage(imageObj, 0, 0)
-        context.font = '40pt Colibri'
-        context.fillStyle = _this.modelHex
+        context.font = `${_this.fontStyle} ${_this.fontSize}px ${_this.fontFamily}`
+        context.fillStyle = _this.fontColor
         context.fillText(_this.area, 10, 100)
       }
       imageObj.src = 'https://www.html5canvastutorials.com/demos/assets/darth-vader.jpg'
-      console.log(this.modelHex)
     },
     showNot () {
       this.$q.notify({
