@@ -5,17 +5,10 @@
       <q-toolbar color="primary">
           <q-toolbar-title>
               <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat dense round icon="menu" color="white" />
-              <!-- <q-btn-dropdown label="Button">
-                  <q-list link>
-                      <q-item>
-                      <q-item-main>
-                          <q-item-tile label>Item</q-item-tile>
-                      </q-item-main>
-                      </q-item>
-                  </q-list>
-              </q-btn-dropdown> -->
           </q-toolbar-title>
-          <q-btn flat round dense icon="mail" />
+          <q-btn flat round dense>
+              <i class="fab fa-github"></i>
+          </q-btn>
       </q-toolbar>
       </q-layout-header>
         <q-layout-drawer
@@ -28,7 +21,7 @@
               inset-delimiter
           >
               <q-list-header>Nav bar</q-list-header>
-               <router-link to="create">
+               <router-link class="nav-left-link" to="create">
                     <q-item @click.native="openURL('/create')">
                     <q-item-side icon="school" />
                     <q-item-main label="Create posters" />
@@ -59,3 +52,9 @@ export default{
   })
 }
 </script>
+
+<style>
+.nav-left-link{
+    text-decoration: none;
+}
+</style>

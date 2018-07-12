@@ -23,37 +23,8 @@
             />
           </q-modal>
 
-          <canvas id="myCanvas" width="600px" height="600px"></canvas>
+          <canvas id="myCanvas" width="438px" height="300px"></canvas>
 
-          <div class="row">
-            <div class="col-3">
-              <q-card-media>
-                <img src="~assets/mountains.jpg">
-                <q-card-title slot="overlay">
-                  Title
-                  <span slot="subtitle">Subtitle</span>
-                </q-card-title>
-              </q-card-media>
-            </div>
-            <div class="col-3">
-              <q-card-media>
-                <img src="~assets/mountains.jpg">
-                <q-card-title slot="overlay">
-                  Title
-                  <span slot="subtitle">Subtitle</span>
-                </q-card-title>
-              </q-card-media>
-            </div>
-            <div class="col-3">
-              <q-card-media>
-                <img src="~assets/mountains.jpg">
-                <q-card-title slot="overlay">
-                  Title
-                  <span slot="subtitle">Subtitle</span>
-                </q-card-title>
-              </q-card-media>
-            </div>
-          </div>
       </div>
       <div class="col-md-3">
        <div class="row">
@@ -136,7 +107,7 @@ export default{
       option: '',
       checked: false,
       selection: ['one', 'two', 'three'],
-      area: '',
+      area: 'Some Text',
       selectOptions: [
         {
           label: 'Google',
@@ -159,7 +130,7 @@ export default{
         context.drawImage(imageObj, 0, 0)
         context.font = '40pt Colibri'
         context.fillStyle = _this.modelHex
-        context.fillText('Hello World!', 10, 100)
+        context.fillText(_this.area, 10, 100)
       }
       imageObj.src = 'https://www.html5canvastutorials.com/demos/assets/darth-vader.jpg'
       console.log(this.modelHex)
