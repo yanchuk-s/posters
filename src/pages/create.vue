@@ -23,7 +23,24 @@
             />
           </q-modal>
 
-          <canvas id="myCanvas" width="438px" height="300px"></canvas>
+           <v-stage ref="stage" :config="configKonva">
+              <v-layer ref="layer">
+                 <v-text ref="text"
+                 @dragend="dragText"
+                 @dragmove="moveText"
+                 :config="{
+                    x: `${dragX}`,
+                    y: `${dragY}`,
+                    text: `${area}`,
+                    fontSize: `${fontSize}`,
+                    fontFamily: `${fontFamily}`,
+                    fontStyle: `${fontStyle}`,
+                    fill: `${fontColor}`,
+                    opacity: `${fontOpacity}`,
+                    draggable: true
+                 }"></v-text>
+              </v-layer>
+            </v-stage>
 
       </div>
       <div class="col-md-3">
@@ -45,6 +62,18 @@
               snap
             />
          </div>
+
+         <div class="col-md-12">
+           <q-slider
+              v-model="fontOpacity"
+              :min="0.1"
+              :max="1"
+              :step="0.1"
+              label
+              snap
+            />
+         </div>
+
          <div class="col-md-12">
                 <q-select
                   v-model="fontFamily"
@@ -74,35 +103,37 @@
             <br><br>
             <q-checkbox v-model="selection" val="three" label="Three" />
          </div>
-         <div class="col-md-12">
-
-         </div>
        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-
 import { QInput } from 'quasar'
+
+import Vue from 'vue'
+import VueKonva from 'vue-konva'
+
+Vue.use(VueKonva)
 export default{
   name: 'create',
   components: {
     QInput
   },
-  mounted () {
-    var _this = this
-    setInterval(function () {
-      _this.drawCanv()
-    }, 300)
-  },
   data () {
     return {
+      fontColor: '#6FD124',
+      configKonva: {
+        width: 500,
+        height: 500
+      },
+      dragX: 50,
+      dragY: 50,
       opened: false,
       input: '',
       fontSize: '10',
-      fontColor: '#6FD124',
       fontFamily: 'Roboto',
+      fontOpacity: '1',
       fontStyle: 'normal',
       checked: false,
       selection: ['one', 'two', 'three'],
@@ -120,18 +151,16 @@ export default{
     }
   },
   methods: {
-    drawCanv () {
-      var canvas = document.getElementById('myCanvas')
-      var context = canvas.getContext('2d')
-      var imageObj = new Image()
-      let _this = this
-      imageObj.onload = function () {
-        context.drawImage(imageObj, 0, 0)
-        context.font = `${_this.fontStyle} ${_this.fontSize}px ${_this.fontFamily}`
-        context.fillStyle = _this.fontColor
-        context.fillText(_this.area, 10, 100)
-      }
-      imageObj.src = 'https://www.html5canvastutorials.com/demos/assets/darth-vader.jpg'
+    moveText () {
+      this.dragX = this.$refs.text.getStage()._lastPos.x
+      this.dragY = this.$refs.text.getStage()._lastPos.y
+    },
+    dragText () {
+      console.log('DRAG TEXT')
+      console.log(this.$refs.text.getStage()._lastPos.x)
+      console.log(this.$refs.text.getStage()._lastPos.y)
+      this.dragX = this.$refs.text.getStage()._lastPos.x
+      this.dragY = this.$refs.text.getStage()._lastPos.y
     },
     showNot () {
       this.$q.notify({
