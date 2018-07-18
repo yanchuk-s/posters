@@ -6,7 +6,7 @@
           <q-toolbar-title>
               <q-btn @click="leftDrawerOpen = !leftDrawerOpen" flat dense round icon="menu" color="white" />
           </q-toolbar-title>
-          <q-btn flat round dense>
+          <q-btn flat round dense @click="openGithubLink">
               <i class="fab fa-github"></i>
           </q-btn>
       </q-toolbar>
@@ -31,7 +31,7 @@
               <q-item-side icon="chat" />
               <q-item-main label="Edit posters"/>
               </q-item>
-              <q-item @click.native="openURL('https://github.com/posters/')">
+              <q-item @click.native="openURL('https://github.com/yanchuk-s/posters')">
               <q-item-side icon="code" />
               <q-item-main label="GitHub" sublabel="github.com/posters" />
               </q-item>
@@ -49,7 +49,12 @@ export default{
   name: 'Header',
   data: () => ({
     leftDrawerOpen: false
-  })
+  }),
+  methods: {
+    openGithubLink () {
+      window.open('https://github.com/yanchuk-s/posters', '_blank')
+    }
+  }
 }
 </script>
 

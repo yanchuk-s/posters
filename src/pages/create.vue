@@ -34,6 +34,8 @@
                  <v-text ref="text"
                  @dragend="dragText"
                  @dragmove="moveText"
+                 @mouseover="cursordragOver"
+                 @mouseout="cursordragOut"
                  :config="{
                     x: `${dragX}`,
                     y: `${dragY}`,
@@ -48,6 +50,8 @@
 
                 <v-text v-if="showDate" ref="dater"
                  @dragmove="movedate"
+                 @mouseover="cursordragOver"
+                 @mouseout="cursordragOut"
                  :config="{
                     x: `${dragDateX}`,
                     y: `${dragDateY}`,
@@ -62,6 +66,8 @@
 
                 <v-text v-if="showTime" ref="time"
                  @dragmove="movetime"
+                 @mouseover="cursordragOver"
+                 @mouseout="cursordragOut"
                  :config="{
                     x: `${dragTimeX}`,
                     y: `${dragTimeY}`,
@@ -174,7 +180,19 @@
                     snap
                   />
               </div>
-              <q-uploader :url="url"  @uploaded="imgUpload(file, xhr)"/>
+              <div class="col-md-12">
+                  <span class="option-label">Change background</span>
+                  <div class="row">
+                    <div class="col-md-6" v-for="(bg, index) in bgImages" :key="index">
+                      <div class="background-img">
+                        <img @click="changeBg(bg.url)"
+                                v-bind:src="bg.url"
+                                alt=""
+                          >
+                      </div>
+                    </div>
+                  </div>
+              </div>
             </div>
           </q-tab-pane>
           <q-tab-pane name="tab-3">
@@ -260,6 +278,16 @@ export default{
   },
   data () {
     return {
+      bgImages: [
+        { url: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg' },
+        { url: 'https://alternativemovieposters.com/wp-content/uploads/2012/12/sunshinebg.jpg' },
+        { url: 'https://kimherringe.com.au/wp-content/uploads/2015/07/poster-bg-1.jpg' },
+        { url: 'https://img00.deviantart.net/737f/i/2010/334/d/f/poster_bg_by_angelingz-d33z441.jpg' },
+        { url: 'https://i.pinimg.com/originals/15/13/0b/15130bdc9f6e3464bbb12fcf3142b93c.jpg' },
+        { url: 'https://t.motionelements.com/stock-video/video-backgrounds/me8527070-confetti-color-bg-white-hd-a0360-poster.jpg' }
+
+      ],
+      background: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg',
       dateStyle: 'normal',
       dateFamily: 'Roboto',
       dateOpacity: 1,
@@ -340,7 +368,7 @@ export default{
     },
     drawImg () {
       let imageObj = new Image()
-      imageObj.src = 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg'
+      imageObj.src = this.background
       return imageObj
     },
     moveText () {
@@ -362,6 +390,15 @@ export default{
     dragdate () {
       this.dragDateX = this.$refs.dater.getStage()._lastPos.x
       this.dragDateY = this.$refs.dater.getStage()._lastPos.y
+    },
+    cursordragOver () {
+      document.body.style.cursor = 'pointer'
+    },
+    cursordragOut () {
+      document.body.style.cursor = 'default'
+    },
+    changeBg (url) {
+      this.background = url
     },
     showModal () {
       this.opened = !this.opened
@@ -389,6 +426,19 @@ export default{
 </script>
 
 <style lang="scss">
+  .background-img{
+    width: 100%;
+    height: 60px;
+    margin-bottom: 15px;
+    img{
+      cursor: pointer;
+      width: 96%;
+      margin-left: 2%;
+      margin-right: 2%;
+      height: 60px;
+      object-fit: fill;
+    }
+  }
   .data-options{
     margin-bottom: 20px;
   }
