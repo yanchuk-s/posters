@@ -1,24 +1,6 @@
 <template>
     <div>
-        <h1 v-bind:style="{color: modelHex}">HOME</h1>
-        <q-color
-            color="amber-7"
-            float-label="Float Label"
-            v-model="modelHex"
-        />
-        <div class="row relative-position" v-ripple>
-            <q-toolbar color="primary">
-            <q-toolbar-title>
-                Title <i class="material-icons">accessibility_new</i>
-            </q-toolbar-title>
-            <q-btn flat round dense icon="mail" />
-            </q-toolbar>
-        </div>
-        <v-stage :config="configKonva">
-            <v-layer>
-                <v-circle :config="configCircle"></v-circle>
-            </v-layer>
-        </v-stage>
+        <h1>HOME</h1>
     </div>
 </template>
 

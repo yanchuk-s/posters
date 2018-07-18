@@ -32,7 +32,6 @@
 
                 </v-image>
                  <v-text ref="text"
-                 @dragend="dragText"
                  @dragmove="moveText"
                  @mouseover="cursordragOver"
                  @mouseout="cursordragOut"
@@ -285,7 +284,6 @@ export default{
         { url: 'https://img00.deviantart.net/737f/i/2010/334/d/f/poster_bg_by_angelingz-d33z441.jpg' },
         { url: 'https://i.pinimg.com/originals/15/13/0b/15130bdc9f6e3464bbb12fcf3142b93c.jpg' },
         { url: 'https://t.motionelements.com/stock-video/video-backgrounds/me8527070-confetti-color-bg-white-hd-a0360-poster.jpg' }
-
       ],
       background: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg',
       dateStyle: 'normal',
@@ -322,6 +320,38 @@ export default{
         {
           label: 'Colibri',
           value: 'Colibri'
+        },
+        {
+          label: 'Gaegu',
+          value: 'Gaegu'
+        },
+        {
+          label: 'Coda Caption',
+          value: 'Coda Caption'
+        },
+        {
+          label: 'Knewave',
+          value: 'Knewave'
+        },
+        {
+          label: 'Inconsolata',
+          value: 'Inconsolata'
+        },
+        {
+          label: 'Indie Flower',
+          value: 'Indie Flower'
+        },
+        {
+          label: 'Acme',
+          value: 'Acme'
+        },
+        {
+          label: 'Gloria Hallelujah',
+          value: 'Gloria Hallelujah'
+        },
+        {
+          label: 'Skranji',
+          value: 'Skranji'
         }
       ]
     }
@@ -372,10 +402,6 @@ export default{
       return imageObj
     },
     moveText () {
-      this.dragX = this.$refs.text.getStage()._lastPos.x
-      this.dragY = this.$refs.text.getStage()._lastPos.y
-    },
-    dragText () {
       this.dragX = this.$refs.text.getStage()._lastPos.x
       this.dragY = this.$refs.text.getStage()._lastPos.y
     },
