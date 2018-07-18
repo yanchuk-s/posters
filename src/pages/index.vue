@@ -3,15 +3,17 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3" v-for="(poster, index) in posters" :key="index">
-          <div class="poster-item" @click="getPoster(poster.id)">
-            <q-card-media>
-              <img v-bind:src="poster.url">
-              <q-card-title slot="overlay">
-                {{poster.title}}
-                <span slot="subtitle">Subtitle</span>
-              </q-card-title>
-            </q-card-media>
-          </div>
+          <router-link to="edit">
+            <div class="poster-item" @click="getPoster(poster.id)">
+              <q-card-media>
+                <img v-bind:src="poster.url">
+                <q-card-title slot="overlay">
+                  {{poster.title}}
+                  <span slot="subtitle">Subtitle</span>
+                </q-card-title>
+              </q-card-media>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -32,6 +34,7 @@ export default {
   methods: {
     getPoster (id) {
       console.log(id)
+      GLOBAL.posterCheck(id)
     }
   },
   mounted: function () {

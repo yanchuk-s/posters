@@ -27,10 +27,6 @@
                     <q-item-main label="Create posters" />
                     </q-item>
                </router-link>
-              <q-item @click.native="openURL('https://discord.gg/5TDhbDg')">
-              <q-item-side icon="chat" />
-              <q-item-main label="Edit posters"/>
-              </q-item>
               <q-item @click.native="openURL('https://github.com/yanchuk-s/posters')">
               <q-item-side icon="code" />
               <q-item-main label="GitHub" sublabel="github.com/posters" />

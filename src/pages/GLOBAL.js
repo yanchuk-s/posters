@@ -2,6 +2,7 @@ import Vue from 'vue'
 export default new Vue({
   data () {
     return {
+      checkPoster: null,
       posters: [
         {
           id: 1,
@@ -34,6 +35,12 @@ export default new Vue({
           title: 'Example 6'
         }
       ]
+    }
+  },
+  methods: {
+    posterCheck (id) {
+      this.checkPoster = id
+      // console.log(this.checkPoster)
     }
   }
 })
