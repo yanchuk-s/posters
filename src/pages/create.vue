@@ -164,6 +164,10 @@
           <q-tab-pane name="tab-2">
             <div class="row">
               <div class="col-md-12">
+                <span class="option-label">Upload Background</span>
+                <q-uploader id="imgLoad" @add="addimg" @remove:cancel="deleteImg" :url="url" />
+              </div>
+              <div class="col-md-12">
                 <span class="option-label">Poster Width</span>
                 <span>{{canvaWidth}}px</span>
                 <q-slider
@@ -445,6 +449,16 @@ export default{
     }
   },
   methods: {
+    deleteImg () {
+      this.background = 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg'
+    },
+    addimg () {
+      let img = document.getElementsByClassName('q-item-image')[0]
+      let imgURL = img.src
+      console.log(img)
+      console.log(imgURL)
+      this.background = imgURL
+    },
     saveimg () {
       let self = document.createElement('a')
       self.setAttribute('id', 'frames_download_link')
