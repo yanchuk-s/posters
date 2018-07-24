@@ -24,17 +24,15 @@
                <router-link class="nav-left-link" to="create">
                     <q-item @click.native="openURL('/create')">
                     <q-item-side icon="school" />
-                    <q-item-main label="Create posters" />
+                    <q-item-main label="Create posters" sublabel="Create new posters"/>
                     </q-item>
                </router-link>
-              <q-item @click.native="openURL('https://github.com/yanchuk-s/posters')">
-              <q-item-side icon="code" />
-              <q-item-main label="GitHub" sublabel="github.com/posters" />
-              </q-item>
-              <q-item @click.native="openURL('/create')">
-              <q-item-side icon="record_voice_over" />
-              <q-item-main label="Catalog" sublabel="Catalog posters" />
-              </q-item>
+              <router-link class="nav-left-link" to="/">
+                    <q-item @click.native="openURL('/')">
+                    <q-item-side icon="record_voice_over" />
+                    <q-item-main label="Catalog" sublabel="Catalog posters" />
+                    </q-item>
+               </router-link>
           </q-list>
       </q-layout-drawer>
   </div>

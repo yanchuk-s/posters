@@ -2,6 +2,7 @@
   <div>
     <div class="row">
       <div class="col-md-9">
+        <q-btn @click="saveimg" color="primary" size="sm" label="Save" />
         <q-btn @click="showModal" color="primary" size="sm" label="modal" />
         <q-btn @click="showSheet" color="primary" size="sm" label="Sheet" />
 
@@ -14,11 +15,11 @@
             />
           </q-modal>
 
-           <v-stage ref="stage" :config="{
+           <v-stage id="stage" ref="stage" :config="{
               width: `${canvaWidth}`,
               height: `${canvaHeight}`
            }">
-              <v-layer ref="layer">
+              <v-layer id="layer" ref="layer">
                 <v-image ref="image"
                   :config="{
                     x: 0,
@@ -26,7 +27,7 @@
                     image: drawImg(),
                     width: `${canvaWidth}`,
                     height: `${canvaHeight}`,
-                    opacity: `${canvaBgOpacity}`
+                    opacity: `${canvaBgOpacity}`,
                   }"
                 >
 
@@ -45,6 +46,23 @@
                     fill: `${fontColor}`,
                     opacity: `${fontOpacity}`,
                     draggable: true
+                 }"></v-text>
+
+                 <v-text v-if="showDescr" ref="description"
+                 @dragmove="moveDescr"
+                 @mouseover="cursordragOver"
+                 @mouseout="cursordragOut"
+                 :config="{
+                    x: `${dragDescrX}`,
+                    y: `${dragDescrY}`,
+                    text: `${description}`,
+                    fontSize: `${descrfontSize}`,
+                    fontFamily: `${descrfontFamily}`,
+                    fontStyle: `${descrfontStyle}`,
+                    fill: `${descrfontColor}`,
+                    opacity: `${descrfontOpacity}`,
+                    draggable: true,
+                    textAlign: center
                  }"></v-text>
 
                 <v-text v-if="showDate" ref="dater"
@@ -85,6 +103,7 @@
         <q-tabs>
           <!-- Tabs - notice slot="title" -->
           <q-tab default slot="title" name="tab-1" icon="text_format" />
+          <q-tab slot="title" name="tab-4" icon="description" />
           <q-tab slot="title" name="tab-2" icon="photo_size_select_actual" />
           <q-tab slot="title" name="tab-3" icon="alarm" />
 
@@ -258,6 +277,65 @@
                 </div>
               </div>
           </q-tab-pane>
+          <q-tab-pane name="tab-4">
+            <div class="row">
+                <q-checkbox @focus="descrshow" class="descr-check" v-model="showDescr" label="Add Description" />
+                <div v-if="showDescr" class="description-style">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <q-input
+                        v-model="description"
+                        type="textarea"
+                        float-label="Description"
+                        :max-height="100"
+                        rows="7"
+                      /><!-- max-height refers to pixels -->
+                    </div>
+                    <div class="col-md-12">
+                      <span class="option-label">Description Font Color</span>
+                      <q-color
+                        color="amber-7"
+                        v-model="descrfontColor"
+                        />
+                    </div>
+                    <div class="col-md-12">
+                      <span class="option-label">Description Font Size</span>
+                      <q-slider
+                          v-model="descrfontSize"
+                          :min="10"
+                          :max="80"
+                          :step="1"
+                          label
+                          snap
+                        />
+                    </div>
+                    <div class="col-md-12">
+                      <span class="option-label">Description Font Opacity</span>
+                      <q-slider
+                          v-model="descrfontOpacity"
+                          :min="0.1"
+                          :max="1"
+                          :step="0.1"
+                          label
+                          snap
+                        />
+                    </div>
+                    <div class="col-md-12">
+                      <span class="option-label">Description Font Family</span>
+                        <q-select
+                          v-model="descrfontFamily"
+                          :options="selectOptions"
+                        />
+                    </div>
+                    <div class="col-md-12">
+                      <span class="option-label">Description Font Style</span>
+                      <q-radio v-model="descrfontStyle" val="normal" label="Normal" />
+                      <q-radio v-model="descrfontStyle" val="italic" label="Italic" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </q-tab-pane>
         </q-tabs>
       </div>
     </div>
@@ -270,6 +348,7 @@ import Vue from 'vue'
 import VueKonva from 'vue-konva'
 
 Vue.use(VueKonva)
+
 export default{
   name: 'create',
   components: {
@@ -293,14 +372,18 @@ export default{
       dateSize: '15',
       showDate: false,
       showTime: false,
+      showDescr: true,
       datapicker: new Date(),
-      timepicker: null,
+      timepicker: undefined,
       canvaBgOpacity: 1,
       canvaWidth: 500,
       canvaHeight: 500,
       fontColor: '#6FD124',
+      descrfontColor: '#6FD124',
       dragX: 50,
       dragY: 50,
+      dragDescrX: 80,
+      dragDescrY: 80,
       dragTimeX: 50,
       dragTimeY: 50,
       dragDateX: 50,
@@ -308,10 +391,15 @@ export default{
       opened: false,
       input: '',
       fontSize: '10',
+      descrfontSize: '14',
       fontFamily: 'Roboto',
+      descrfontFamily: 'Roboto',
       fontOpacity: '1',
+      descrfontOpacity: '1',
       fontStyle: 'normal',
+      descrfontStyle: 'normal',
       area: 'Some Text',
+      description: 'Description',
       selectOptions: [
         {
           label: 'Roboto',
@@ -357,6 +445,30 @@ export default{
     }
   },
   methods: {
+    saveimg () {
+      let self = document.createElement('a')
+      self.setAttribute('id', 'frames_download_link')
+      self.setAttribute('target', '_blank')
+      console.log(self)
+
+      // let canv = document.getElementById('stage')
+      // let canvasLayer = document.getElementsByTagName('canvas')[0]
+      console.log(this.$refs.stage.getStage().toDataURL('image/png'))
+
+      // self.downloadButton.addEventListener('click', function () {
+      //   document.getElementsByTagName('body')[0].appendChild(self)
+      //   self.click()
+      //   self.remove()
+      // })
+
+      // var dataUrl = canv.toDataURL('image/png')
+      // self.setAttribute('download', 'image -' + new Date() * 1)
+      // // console.log(self)
+      // // console.log(dataUrl)
+      // self.setAttribute('href', canv)
+      // self.click()
+      // self.remove()
+    },
     datashow () {
       if (this.showDate) {
         this.$q.notify({
@@ -396,6 +508,45 @@ export default{
         })
       }
     },
+    descrshow () {
+      if (this.showDescr) {
+        this.$q.notify({
+          message: `Description deleted`,
+          timeout: 3000,
+          type: 'negative',
+          color: 'negative',
+          textColor: 'white',
+          icon: 'delete_forever',
+          position: 'top-right',
+          actions: [
+            {
+              label: 'Dismiss',
+              handler: () => {
+                console.log('dismissed')
+              }
+            }
+          ]
+        })
+      } else {
+        this.$q.notify({
+          message: `Description added`,
+          timeout: 3000,
+          type: 'positive',
+          color: 'positive',
+          textColor: 'white',
+          icon: 'check',
+          position: 'top-right',
+          actions: [
+            {
+              label: 'Dismiss',
+              handler: () => {
+                console.log('dismissed')
+              }
+            }
+          ]
+        })
+      }
+    },
     drawImg () {
       let imageObj = new Image()
       imageObj.src = this.background
@@ -404,6 +555,10 @@ export default{
     moveText () {
       this.dragX = this.$refs.text.getStage()._lastPos.x
       this.dragY = this.$refs.text.getStage()._lastPos.y
+    },
+    moveDescr () {
+      this.dragDescrX = this.$refs.description.getStage()._lastPos.x
+      this.dragDescrY = this.$refs.description.getStage()._lastPos.y
     },
     movetime () {
       this.dragTimeX = this.$refs.time.getStage()._lastPos.x
@@ -452,6 +607,10 @@ export default{
 </script>
 
 <style lang="scss">
+  .descr-check{
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
   .background-img{
     width: 100%;
     height: 60px;
