@@ -458,6 +458,9 @@ export default{
       console.log(img)
       console.log(imgURL)
       this.background = imgURL
+      this.bgImages.push({
+        url: imgURL
+      })
     },
     saveimg () {
       let self = document.createElement('a')

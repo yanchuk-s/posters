@@ -461,6 +461,9 @@ export default{
       console.log(img)
       console.log(imgURL)
       this.background = imgURL
+      this.bgImages.push({
+        url: imgURL
+      })
     },
     datashow () {
       if (this.showDate) {
