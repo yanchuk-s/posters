@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-8 canva-div">
         <q-btn @click="saveimg" color="primary" size="sm" label="Save" />
         <q-btn @click="showModal" color="primary" size="sm" label="modal" />
         <q-btn @click="showSheet" color="primary" size="sm" label="Sheet" />
@@ -30,8 +30,8 @@
                     opacity: `${canvaBgOpacity}`,
                   }"
                 >
-
                 </v-image>
+
                  <v-text ref="text"
                  @dragmove="moveText"
                  @mouseover="cursordragOver"
@@ -45,7 +45,8 @@
                     fontStyle: `${fontStyle}`,
                     fill: `${fontColor}`,
                     opacity: `${fontOpacity}`,
-                    draggable: true
+                    draggable: true,
+                    rotation: `${rotateTitle}`
                  }"></v-text>
 
                  <v-text v-if="showDescr" ref="description"
@@ -62,7 +63,7 @@
                     fill: `${descrfontColor}`,
                     opacity: `${descrfontOpacity}`,
                     draggable: true,
-                    textAlign: center
+                    rotation: `${rotateDescr}`
                  }"></v-text>
 
                 <v-text v-if="showDate" ref="dater"
@@ -99,7 +100,7 @@
             </v-stage>
 
       </div>
-      <div class="col-md-3 option-section">
+      <div class="col-md-4 option-section">
         <q-tabs>
           <!-- Tabs - notice slot="title" -->
           <q-tab default slot="title" name="tab-1" icon="text_format" />
@@ -136,6 +137,17 @@
                     snap
                   />
               </div>
+
+              <div class="col-md-12">
+                <span class="option-label">Rotate Font</span>
+                  <q-knob
+                    v-model="rotateTitle"
+                    :min="0"
+                    :max="360"
+                    color="primary"
+                  />
+              </div>
+
               <div class="col-md-12">
                 <span class="option-label">Font Opacity</span>
                 <q-slider
@@ -165,7 +177,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="option-label">Upload Background</span>
-                <q-uploader id="imgLoad" @add="addimg" @remove:cancel="deleteImg" :url="url" />
+                <q-uploader id="imgLoad" @add="addimg" @remove:cancel="deleteImg" />
               </div>
               <div class="col-md-12">
                 <span class="option-label">Poster Width</span>
@@ -205,7 +217,7 @@
               <div class="col-md-12">
                   <span class="option-label">Change background</span>
                   <div class="row">
-                    <div class="col-md-6" v-for="(bg, index) in bgImages" :key="index">
+                    <div class="col-md-4" v-for="(bg, index) in bgImages" :key="index">
                       <div class="background-img">
                         <img @click="changeBg(bg.url)"
                                 v-bind:src="bg.url"
@@ -293,7 +305,8 @@
                         float-label="Description"
                         :max-height="100"
                         rows="7"
-                      /><!-- max-height refers to pixels -->
+                      />
+
                     </div>
                     <div class="col-md-12">
                       <span class="option-label">Description Font Color</span>
@@ -313,6 +326,17 @@
                           snap
                         />
                     </div>
+
+                    <div class="col-md-12">
+                      <span class="option-label">Rotate Font</span>
+                        <q-knob
+                          v-model="rotateDescr"
+                          :min="0"
+                          :max="360"
+                          color="primary"
+                        />
+                    </div>
+
                     <div class="col-md-12">
                       <span class="option-label">Description Font Opacity</span>
                       <q-slider
@@ -346,7 +370,7 @@
   </div>
 </template>
 <script>
-import { QInput } from 'quasar'
+import { QInput, date } from 'quasar'
 
 import Vue from 'vue'
 import VueKonva from 'vue-konva'
@@ -360,6 +384,8 @@ export default{
   },
   data () {
     return {
+      rotateDescr: 0,
+      rotateTitle: 0,
       bgImages: [
         { url: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg' },
         { url: 'https://alternativemovieposters.com/wp-content/uploads/2012/12/sunshinebg.jpg' },
@@ -377,7 +403,7 @@ export default{
       showDate: false,
       showTime: false,
       showDescr: true,
-      datapicker: new Date(),
+      datapicker: this.dateformat(),
       timepicker: undefined,
       canvaBgOpacity: 1,
       canvaWidth: 500,
@@ -449,6 +475,11 @@ export default{
     }
   },
   methods: {
+    dateformat () {
+      let timeStamp = Date.now()
+      let formattedString = date.formatDate(timeStamp, 'YYYY:MMMM:DD')
+      return formattedString
+    },
     deleteImg () {
       this.background = 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg'
     },
@@ -624,6 +655,9 @@ export default{
 </script>
 
 <style lang="scss">
+  .canva-div{
+    z-index: 999;
+  }
   .descr-check{
     margin-top: 10px;
     margin-bottom: 20px;
