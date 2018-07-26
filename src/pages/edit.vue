@@ -29,8 +29,25 @@
                     opacity: `${canvaBgOpacity}`
                   }"
                 >
-
                 </v-image>
+
+                <v-image ref="oatherImage"
+                 @dragmove="moveImg"
+                 @mouseover="cursordragOver"
+                 @mouseout="cursordragOut"
+                  :config="{
+                    x: `${dragImgX}`,
+                    y: `${dragImgY}`,
+                    image: drawPhoto(),
+                    width: `${photoWidth}`,
+                    height: `${photoHeight}`,
+                    opacity: `${photoOpacity}`,
+                    rotation: `${rotatePhoto}`,
+                    draggable: true
+                  }"
+                >
+                </v-image>
+
                  <v-text ref="text"
                  @dragmove="moveText"
                  @mouseover="cursordragOver"
@@ -105,6 +122,7 @@
           <q-tab default slot="title" name="tab-1" icon="text_format" />
           <q-tab slot="title" name="tab-4" icon="description" />
           <q-tab slot="title" name="tab-2" icon="photo_size_select_actual" />
+          <q-tab slot="title" name="tab-5" icon="add_photo_alternate" />
           <q-tab slot="title" name="tab-3" icon="alarm" />
 
           <!-- Targets -->
@@ -362,6 +380,58 @@
                 </div>
               </div>
           </q-tab-pane>
+          <q-tab-pane name="tab-5">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="option-label">Upload Background</span>
+                <q-uploader id="imgLoad" @add="addPhoto" @remove:cancel="deleteImg" />
+              </div>
+              <div class="col-md-12">
+                <span class="option-label">Img Weight</span>
+                <span>{{photoHeight}}px</span>
+                <q-slider
+                    v-model="photoWidth"
+                    :min="50"
+                    :max="500"
+                    :step="10"
+                    label
+                    snap
+                  />
+              </div>
+               <div class="col-md-12">
+                <span class="option-label">Img Height</span>
+                <span>{{photoHeight}}px</span>
+                <q-slider
+                    v-model="photoHeight"
+                    :min="50"
+                    :max="500"
+                    :step="10"
+                    label
+                    snap
+                  />
+              </div>
+               <div class="col-md-12">
+                  <span class="option-label">Photo Opacity</span>
+                  <q-slider
+                      v-model="photoOpacity"
+                      :min="0.1"
+                      :max="1"
+                      :step="0.1"
+                      label
+                      snap
+                    />
+                </div>
+                <div class="col-md-12">
+                  <span class="option-label">Rotate Font</span>
+                    <q-knob
+                      v-model="rotatePhoto"
+                      :min="0"
+                      :max="360"
+                      color="primary"
+                    />
+                </div>
+            </div>
+          </q-tab-pane>
         </q-tabs>
       </div>
     </div>
@@ -393,6 +463,13 @@ export default{
   },
   data () {
     return {
+      rotatePhoto: 0,
+      dragImgX: 0,
+      dragImgY: 0,
+      oatherPhoto: '',
+      photoOpacity: 1,
+      photoWidth: 100,
+      photoHeight: 100,
       rotateDescr: 0,
       rotateTitle: 0,
       bgImages: [],
@@ -490,6 +567,13 @@ export default{
         url: imgURL
       })
     },
+    addPhoto () {
+      let img = document.getElementsByClassName('q-item-image')[0]
+      let imgURL = img.src
+      console.log(img)
+      console.log(imgURL)
+      this.oatherPhoto = imgURL
+    },
     datashow () {
       if (this.showDate) {
         this.$q.notify({
@@ -572,6 +656,15 @@ export default{
       let imageObj = new Image()
       imageObj.src = this.background
       return imageObj
+    },
+    drawPhoto () {
+      let addImg = new Image()
+      addImg.src = this.oatherPhoto
+      return addImg
+    },
+    moveImg () {
+      this.dragImgX = this.$refs.oatherImage.getStage()._lastPos.x
+      this.dragImgY = this.$refs.oatherImage.getStage()._lastPos.y
     },
     moveText () {
       this.dragX = this.$refs.text.getStage()._lastPos.x
