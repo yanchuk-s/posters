@@ -489,7 +489,9 @@ export default{
         { url: 'https://kimherringe.com.au/wp-content/uploads/2015/07/poster-bg-1.jpg' },
         { url: 'https://img00.deviantart.net/737f/i/2010/334/d/f/poster_bg_by_angelingz-d33z441.jpg' },
         { url: 'https://www.komar.de/ru/media/catalog/product/cache/7/image/9df78eab33525d08d6e5fb8d27136e95/8/-/8-487_star_wars_intro_ma.jpg' },
-        { url: 'https://t.motionelements.com/stock-video/video-backgrounds/me8527070-confetti-color-bg-white-hd-a0360-poster.jpg' }
+        { url: 'https://t.motionelements.com/stock-video/video-backgrounds/me8527070-confetti-color-bg-white-hd-a0360-poster.jpg' },
+        { url: 'http://c.cdnv2.artofthetitle.com/assets/sm/upload/7i/yd/qy/th/cosmos_research_03.jpg' },
+        { url: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Big_Ben_scaffolding_2017.jpg' }
       ],
       background: 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg',
       oatherPhoto: '',

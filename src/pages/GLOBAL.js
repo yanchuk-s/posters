@@ -80,7 +80,19 @@ export default new Vue({
         { url: 'http://icons.iconarchive.com/icons/goodstuff-no-nonsense/free-space/1024/darth-vader-icon.png' },
         { url: 'https://vignette.wikia.nocookie.net/unanything/images/f/f7/Darth_Vader.png/revision/latest?cb=20110710233331' },
         { url: 'https://vignette.wikia.nocookie.net/simpsons/images/b/bd/Homer_Simpson.png/revision/latest?cb=20140126234206' },
-        { url: 'http://daymultik.ru/images/uznaj_o_svoem_geroe/Volk.png' }
+        { url: 'https://cdn.icon-icons.com/icons2/21/PNG/256/toons_bart_simpson_bartsimpson_2377.png' },
+        { url: 'http://daymultik.ru/images/uznaj_o_svoem_geroe/Volk.png' },
+        { url: 'http://www.pngall.com/wp-content/uploads/2016/03/Avengers-Hulk-PNG.png' },
+        { url: 'http://www.stickpng.com/assets/images/580b57fbd9996e24bc43bdbe.png' },
+        { url: 'https://vignette.wikia.nocookie.net/evil/images/5/59/The_Death_Star.png/revision/latest?cb=20150810042957' },
+        { url: 'http://pngimg.com/uploads/spider_man/spider_man_PNG4.png' },
+        { url: 'https://s.tcdn.co/403/5d1/4035d1d0-14d8-3a0e-8dd6-c57f7df5a945/192/4.png' },
+        { url: 'https://i.pinimg.com/originals/65/66/d6/6566d6635e53b618624c181922a9120b.png' },
+        { url: 'https://pre00.deviantart.net/2083/th/pre/i/2016/331/2/0/deadpool_png__2_by_anna_x_anarchy-dapuhlg.png' },
+        { url: 'https://pre00.deviantart.net/7b6b/th/pre/i/2016/331/c/c/deadpool_png__3_by_anna_x_anarchy-dapuv77.png' },
+        { url: 'https://vignette.wikia.nocookie.net/vsbattles/images/f/fe/Sub_Zero.png/revision/latest?cb=20150925231849' },
+        { url: 'http://www.pngmart.com/files/2/Mortal-Kombat-Scorpion-PNG-HD.png' },
+        { url: 'https://vignette.wikia.nocookie.net/guitarhero/images/7/78/IronMan.png/revision/latest?cb=20140812205512' }
       ]
     }
   },
