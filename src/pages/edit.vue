@@ -118,14 +118,13 @@
       </div>
       <div class="col-md-4 option-section">
         <q-tabs>
-          <!-- Tabs - notice slot="title" -->
+
           <q-tab default slot="title" name="tab-1" icon="text_format" />
           <q-tab slot="title" name="tab-4" icon="description" />
           <q-tab slot="title" name="tab-2" icon="photo_size_select_actual" />
           <q-tab slot="title" name="tab-5" icon="add_photo_alternate" />
           <q-tab slot="title" name="tab-3" icon="alarm" />
 
-          <!-- Targets -->
           <q-tab-pane name="tab-1">
             <div class="row">
               <div class="col-md-12">
@@ -234,7 +233,7 @@
               <div class="col-md-12">
                   <span class="option-label">Change background</span>
                   <div class="row">
-                    <div class="col-md-6" v-for="(bg, index) in bgImages" :key="index">
+                    <div class="col-md-3" v-for="(bg, index) in bgImages" :key="index">
                       <div class="background-img">
                         <img @click="changeBg(bg.url)"
                                 v-bind:src="bg.url"
@@ -322,7 +321,7 @@
                         float-label="Description"
                         :max-height="100"
                         rows="7"
-                      /><!-- max-height refers to pixels -->
+                      />
                     </div>
                     <div class="col-md-12">
                       <span class="option-label">Description Font Color</span>
@@ -386,9 +385,23 @@
                 <span class="option-label">Upload Background</span>
                 <q-uploader id="imgLoad" @add="addPhoto" @remove:cancel="deleteImg" />
               </div>
+               <div class="col-md-12">
+                  <span class="option-label">Change Image</span>
+                  <div class="row">
+                    <div class="col-md-3" v-for="(img, index) in oatherImages" :key="index">
+                      <div class="background-img oather-img">
+                        <img @click="changeImage(img.url)"
+                            v-bind:src="img.url"
+                            alt=""
+                          >
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div v-if="imagestyle" class="imagestyle">
               <div class="col-md-12">
                 <span class="option-label">Img Weight</span>
-                <span>{{photoHeight}}px</span>
+                <span>{{photoWidth}}px</span>
                 <q-slider
                     v-model="photoWidth"
                     :min="50"
@@ -430,6 +443,7 @@
                       color="primary"
                     />
                 </div>
+                </div>
             </div>
           </q-tab-pane>
         </q-tabs>
@@ -452,17 +466,39 @@ export default{
   },
   mounted: function () {
     this.bgImages = GLOBAL.posters
+    this.oatherImages = GLOBAL.oatherImages
     // console.log(GLOBAL.checkPoster)
     let _this = this
     this.bgImages.forEach(function (item, i, arr) {
       if (item.id === GLOBAL.checkPoster) {
         // console.log(item.url)
         _this.background = item.url
+        _this.area = item.title
+        _this.fontFamily = item.fontFamily
+        _this.fontSize = item.fontSize
+        _this.rotateTitle = item.rotation
+        _this.dragX = item.X
+        _this.dragY = item.Y
+        _this.canvaBgOpacity = item.bgOpacity
+        _this.fontColor = item.fontColor
+        _this.descrfontSize = item.descrSize
+        _this.descrfontFamily = item.descrFont
+        _this.dragDescrX = item.dragDescrX
+        _this.dragDescrY = item.dragDescrY
+        _this.oatherPhoto = item.oatherPhoto
+        if (item.oatherPhoto !== '') {
+          _this.imagestyle = true
+          _this.photoWidth = item.photoWidth
+          _this.photoHeight = item.photoHeight
+          _this.dragImgX = item.dragImgX
+          _this.dragImgY = item.dragImgY
+        }
       }
     })
   },
   data () {
     return {
+      imagestyle: false,
       rotatePhoto: 0,
       dragImgX: 0,
       dragImgY: 0,
@@ -473,7 +509,7 @@ export default{
       rotateDescr: 0,
       rotateTitle: 0,
       bgImages: [],
-      background: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg',
+      background: 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg',
       dateStyle: 'normal',
       dateFamily: 'Roboto',
       dateOpacity: 1,
@@ -499,7 +535,7 @@ export default{
       dragDateY: 50,
       opened: false,
       input: '',
-      fontSize: '10',
+      fontSize: '22',
       descrfontSize: '14',
       fontFamily: 'Roboto',
       descrfontFamily: 'Roboto',
@@ -554,8 +590,12 @@ export default{
     }
   },
   methods: {
+    changeImage (url) {
+      this.oatherPhoto = url
+      this.imagestyle = true
+    },
     deleteImg () {
-      this.background = 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg'
+      this.background = 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg'
     },
     addimg () {
       let img = document.getElementsByClassName('q-item-image')[0]
@@ -573,6 +613,7 @@ export default{
       console.log(img)
       console.log(imgURL)
       this.oatherPhoto = imgURL
+      this.imagestyle = true
     },
     datashow () {
       if (this.showDate) {
@@ -669,6 +710,7 @@ export default{
     moveText () {
       this.dragX = this.$refs.text.getStage()._lastPos.x
       this.dragY = this.$refs.text.getStage()._lastPos.y
+      console.log(this.dragX, this.dragY)
     },
     moveDescr () {
       this.dragDescrX = this.$refs.description.getStage()._lastPos.x
@@ -721,6 +763,9 @@ export default{
 </script>
 
 <style lang="scss">
+ .imagestyle{
+    width: 100%;
+  }
 .canva-div{
     z-index: 999;
   }
@@ -735,6 +780,11 @@ export default{
       margin-right: 2%;
       height: 60px;
       object-fit: fill;
+    }
+  }
+  .oather-img{
+    img{
+      object-fit: contain;
     }
   }
   .data-options{

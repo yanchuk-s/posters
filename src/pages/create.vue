@@ -119,14 +119,12 @@
       </div>
       <div class="col-md-4 option-section">
         <q-tabs>
-          <!-- Tabs - notice slot="title" -->
           <q-tab default slot="title" name="tab-1" icon="text_format" />
           <q-tab slot="title" name="tab-4" icon="description" />
           <q-tab slot="title" name="tab-2" icon="photo_size_select_actual" />
           <q-tab slot="title" name="tab-5" icon="add_photo_alternate" />
           <q-tab slot="title" name="tab-3" icon="alarm" />
 
-          <!-- Targets -->
           <q-tab-pane name="tab-1">
             <div class="row">
               <div class="col-md-12">
@@ -235,11 +233,11 @@
               <div class="col-md-12">
                   <span class="option-label">Change background</span>
                   <div class="row">
-                    <div class="col-md-4" v-for="(bg, index) in bgImages" :key="index">
+                    <div class="col-md-3" v-for="(bg, index) in bgImages" :key="index">
                       <div class="background-img">
                         <img @click="changeBg(bg.url)"
-                                v-bind:src="bg.url"
-                                alt=""
+                            v-bind:src="bg.url"
+                            alt=""
                           >
                       </div>
                     </div>
@@ -384,16 +382,30 @@
           </q-tab-pane>
           <q-tab-pane name="tab-5">
             <div class="row">
-             <div class="col-md-12">
-                  <q-toggle class="picker" v-model="showPhoto" label="Show Image" />
-                </div>
               <div class="col-md-12">
-                <span class="option-label">Upload Background</span>
+                  <q-toggle class="picker" v-model="showPhoto" label="Show Image" />
+              </div>
+              <div class="col-md-12">
+                <span class="option-label">Upload Image</span>
                 <q-uploader id="imgLoad" @add="addPhoto" @remove:cancel="deleteImg" />
               </div>
               <div class="col-md-12">
+                  <span class="option-label">Change Image</span>
+                  <div class="row">
+                    <div class="col-md-3" v-for="(img, index) in oatherImages" :key="index">
+                      <div class="background-img oather-img">
+                        <img @click="changeImage(img.url)"
+                            v-bind:src="img.url"
+                            alt=""
+                          >
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            <div v-if="imagestyle" class="imagestyle">
+              <div class="col-md-12">
                 <span class="option-label">Img Weight</span>
-                <span>{{photoHeight}}px</span>
+                <span>{{photoWidth}}px</span>
                 <q-slider
                     v-model="photoWidth"
                     :min="50"
@@ -435,6 +447,7 @@
                       color="primary"
                     />
                 </div>
+              </div>
             </div>
           </q-tab-pane>
         </q-tabs>
@@ -447,6 +460,7 @@ import { QInput, date } from 'quasar'
 
 import Vue from 'vue'
 import VueKonva from 'vue-konva'
+import GLOBAL from './GLOBAL'
 
 Vue.use(VueKonva)
 
@@ -455,8 +469,13 @@ export default{
   components: {
     QInput
   },
+  mounted: function () {
+    this.oatherImages = GLOBAL.oatherImages
+  },
   data () {
     return {
+      oatherImages: [],
+      imagestyle: false,
       showPhoto: true,
       rotatePhoto: 0,
       photoOpacity: 1,
@@ -465,14 +484,14 @@ export default{
       rotateDescr: 0,
       rotateTitle: 0,
       bgImages: [
-        { url: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg' },
+        { url: 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg' },
         { url: 'https://alternativemovieposters.com/wp-content/uploads/2012/12/sunshinebg.jpg' },
         { url: 'https://kimherringe.com.au/wp-content/uploads/2015/07/poster-bg-1.jpg' },
         { url: 'https://img00.deviantart.net/737f/i/2010/334/d/f/poster_bg_by_angelingz-d33z441.jpg' },
-        { url: 'https://i.pinimg.com/originals/15/13/0b/15130bdc9f6e3464bbb12fcf3142b93c.jpg' },
+        { url: 'https://www.komar.de/ru/media/catalog/product/cache/7/image/9df78eab33525d08d6e5fb8d27136e95/8/-/8-487_star_wars_intro_ma.jpg' },
         { url: 'https://t.motionelements.com/stock-video/video-backgrounds/me8527070-confetti-color-bg-white-hd-a0360-poster.jpg' }
       ],
-      background: 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg',
+      background: 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg',
       oatherPhoto: '',
       dateStyle: 'normal',
       dateFamily: 'Roboto',
@@ -501,7 +520,7 @@ export default{
       dragDateY: 50,
       opened: false,
       input: '',
-      fontSize: '10',
+      fontSize: '22',
       descrfontSize: '14',
       fontFamily: 'Roboto',
       descrfontFamily: 'Roboto',
@@ -556,13 +575,18 @@ export default{
     }
   },
   methods: {
+    changeImage (url) {
+      console.log(url)
+      this.oatherPhoto = url
+      this.imagestyle = true
+    },
     dateformat () {
       let timeStamp = Date.now()
       let formattedString = date.formatDate(timeStamp, 'YYYY:MMMM:DD')
       return formattedString
     },
     deleteImg () {
-      this.background = 'https://orig00.deviantart.net/44da/f/2012/050/9/7/queen_poster_bg_by_doodlexartist-d4qbmor.jpg'
+      this.background = 'http://4.bp.blogspot.com/-EAf9GFumnH4/VEofl7dE0WI/AAAAAAAABCQ/3bjCVL24UMs/s1600/10735611_1713629975528968_1094024815_n.jpg'
     },
     addimg () {
       let img = document.getElementsByClassName('q-item-image')[0]
@@ -580,6 +604,7 @@ export default{
       console.log(img)
       console.log(imgURL)
       this.oatherPhoto = imgURL
+      this.imagestyle = true
     },
     saveimg () {
       let self = document.createElement('a')
@@ -752,6 +777,9 @@ export default{
 </script>
 
 <style lang="scss">
+  .imagestyle{
+    width: 100%;
+  }
   .canva-div{
     z-index: 999;
   }
@@ -770,6 +798,11 @@ export default{
       margin-right: 2%;
       height: 60px;
       object-fit: fill;
+    }
+  }
+  .oather-img{
+    img{
+      object-fit: contain;
     }
   }
   .data-options{
