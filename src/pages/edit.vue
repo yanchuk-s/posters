@@ -614,6 +614,9 @@ export default{
       console.log(imgURL)
       this.oatherPhoto = imgURL
       this.imagestyle = true
+      this.oatherImages.push({
+        url: imgURL
+      })
     },
     datashow () {
       if (this.showDate) {
