@@ -3,85 +3,52 @@
     <div class="row">
       <div class="col-md-8 canva-div">
         <q-btn @click="saveimg" color="primary" size="sm" label="Save" />
-        <q-btn @click="showModal" color="primary" size="sm" label="modal" />
-        <q-btn @click="showSheet" color="primary" size="sm" label="Sheet" />
-
-          <q-modal v-model="opened">
-            <h4>Basic Modal</h4>
-            <q-btn
-              color="primary"
-              @click="opened = false"
-              label="Close"
-            />
-          </q-modal>
 
            <v-stage id="stage" ref="stage" :config="{
               width: `${canvaWidth}`,
               height: `${canvaHeight}`
            }">
               <v-layer id="layer" ref="layer">
-                <v-image ref="image"
-                  :config="{
-                    x: 0,
-                    y: 0,
-                    image: drawImg(),
-                    width: `${canvaWidth}`,
-                    height: `${canvaHeight}`,
-                    opacity: `${canvaBgOpacity}`,
-                  }"
+                <canvaBackground
+                  :width=this.canvaWidth
+                  :height=this.canvaHeight
+                  :opacity=this.canvaBgOpacity
+                  :background=this.background
                 >
-                </v-image>
+                </canvaBackground>
 
-                <v-image v-if="showPhoto" ref="oatherImage"
-                 @dragmove="moveImg"
-                 @mouseover="cursordragOver"
-                 @mouseout="cursordragOut"
-                  :config="{
-                    x: `${dragImgX}`,
-                    y: `${dragImgY}`,
-                    image: drawPhoto(),
-                    width: `${photoWidth}`,
-                    height: `${photoHeight}`,
-                    opacity: `${photoOpacity}`,
-                    rotation: `${rotatePhoto}`,
-                    draggable: true
-                  }"
+                <canvaPicture
+                  v-if="showPhoto"
+                  :width=this.photoWidth
+                  :height=this.photoHeight
+                  :opacity=this.photoOpacity
+                  :rotation=this.rotatePhoto
+                  :picture=this.oatherPhoto
                 >
-                </v-image>
+                </canvaPicture>
 
-                 <v-text ref="text"
-                 @dragmove="moveText"
-                 @mouseover="cursordragOver"
-                 @mouseout="cursordragOut"
-                 :config="{
-                    x: `${dragX}`,
-                    y: `${dragY}`,
-                    text: `${area}`,
-                    fontSize: `${fontSize}`,
-                    fontFamily: `${fontFamily}`,
-                    fontStyle: `${fontStyle}`,
-                    fill: `${fontColor}`,
-                    opacity: `${fontOpacity}`,
-                    draggable: true,
-                    rotation: `${rotateTitle}`
-                 }"></v-text>
+                <canvaTitle
+                  :fontSize=this.fontSize
+                  :text=this.area
+                  :fontFamily=this.fontFamily
+                  :fontStyle=this.fontStyle
+                  :fontColor=this.fontColor
+                  :opacity=this.fontOpacity
+                  :rotation=this.rotateTitle
+                >
+                </canvaTitle>
 
-                 <v-text v-if="showDescr" ref="description"
-                 @dragmove="moveDescr"
-                 @mouseover="cursordragOver"
-                 @mouseout="cursordragOut"
-                 :config="{
-                    x: `${dragDescrX}`,
-                    y: `${dragDescrY}`,
-                    text: `${description}`,
-                    fontSize: `${descrfontSize}`,
-                    fontFamily: `${descrfontFamily}`,
-                    fontStyle: `${descrfontStyle}`,
-                    fill: `${descrfontColor}`,
-                    opacity: `${descrfontOpacity}`,
-                    draggable: true,
-                    rotation: `${rotateDescr}`
-                 }"></v-text>
+                <canvaDescr
+                  v-if="showDescr"
+                  :fontSize=this.descrfontSize
+                  :text=this.description
+                  :fontFamily=this.descrfontFamily
+                  :fontStyle=this.descrfontStyle
+                  :fontColor=this.descrfontColor
+                  :opacity=this.descrfontOpacity
+                  :rotation=this.rotateDescr
+                >
+                </canvaDescr>
 
                 <v-text v-if="showDate" ref="dater"
                  @dragmove="movedate"
@@ -462,12 +429,21 @@ import Vue from 'vue'
 import VueKonva from 'vue-konva'
 import GLOBAL from './GLOBAL'
 
+import canvaTitle from './title'
+import canvaDescr from './description'
+import canvaBackground from './background'
+import canvaPicture from './picture'
+
 Vue.use(VueKonva)
 
 export default{
   name: 'create',
   components: {
-    QInput
+    QInput,
+    canvaTitle,
+    canvaDescr,
+    canvaBackground,
+    canvaPicture
   },
   mounted: function () {
     this.oatherImages = GLOBAL.oatherImages
@@ -520,7 +496,6 @@ export default{
       dragTimeY: 50,
       dragDateX: 50,
       dragDateY: 50,
-      opened: false,
       input: '',
       fontSize: '22',
       descrfontSize: '14',
@@ -644,7 +619,7 @@ export default{
           color: 'negative',
           textColor: 'white',
           icon: 'delete_forever',
-          position: 'top-right',
+          position: 'bottom-left',
           actions: [
             {
               label: 'Dismiss',
@@ -662,7 +637,7 @@ export default{
           color: 'positive',
           textColor: 'white',
           icon: 'check',
-          position: 'top-right',
+          position: 'bottom-left',
           actions: [
             {
               label: 'Dismiss',
@@ -683,7 +658,7 @@ export default{
           color: 'negative',
           textColor: 'white',
           icon: 'delete_forever',
-          position: 'top-right',
+          position: 'bottom-left',
           actions: [
             {
               label: 'Dismiss',
@@ -701,7 +676,7 @@ export default{
           color: 'positive',
           textColor: 'white',
           icon: 'check',
-          position: 'top-right',
+          position: 'bottom-left',
           actions: [
             {
               label: 'Dismiss',
@@ -712,28 +687,6 @@ export default{
           ]
         })
       }
-    },
-    drawImg () {
-      let imageObj = new Image()
-      imageObj.src = this.background
-      return imageObj
-    },
-    drawPhoto () {
-      let addImg = new Image()
-      addImg.src = this.oatherPhoto
-      return addImg
-    },
-    moveImg () {
-      this.dragImgX = this.$refs.oatherImage.getStage()._lastPos.x
-      this.dragImgY = this.$refs.oatherImage.getStage()._lastPos.y
-    },
-    moveText () {
-      this.dragX = this.$refs.text.getStage()._lastPos.x
-      this.dragY = this.$refs.text.getStage()._lastPos.y
-    },
-    moveDescr () {
-      this.dragDescrX = this.$refs.description.getStage()._lastPos.x
-      this.dragDescrY = this.$refs.description.getStage()._lastPos.y
     },
     movetime () {
       this.dragTimeX = this.$refs.time.getStage()._lastPos.x
@@ -747,35 +700,8 @@ export default{
       this.dragDateX = this.$refs.dater.getStage()._lastPos.x
       this.dragDateY = this.$refs.dater.getStage()._lastPos.y
     },
-    cursordragOver () {
-      document.body.style.cursor = 'pointer'
-    },
-    cursordragOut () {
-      document.body.style.cursor = 'default'
-    },
     changeBg (url) {
       this.background = url
-    },
-    showModal () {
-      this.opened = !this.opened
-    },
-    showSheet () {
-      this.$q.actionSheet({
-        title: 'Article Actions',
-        grid: true,
-        dismissLabel: 'Quit',
-
-        actions: [
-          {
-            label: 'Delete',
-            color: 'negative',
-            icon: 'delete',
-            handler () {
-              console.log('Deleted Article')
-            }
-          }
-        ]
-      })
     }
   }
 }
