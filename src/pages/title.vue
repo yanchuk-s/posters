@@ -65,7 +65,6 @@ export default{
     moveText () {
       this.titleDragX = this.$refs.text.getStage()._lastPos.x
       this.titleDragY = this.$refs.text.getStage()._lastPos.y
-      console.log(this.titleDragX, this.titleDragY)
     },
     cursordragOver () {
       document.body.style.cursor = 'pointer'

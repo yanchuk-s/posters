@@ -47,6 +47,7 @@
                   :fontColor=this.descrfontColor
                   :opacity=this.descrfontOpacity
                   :rotation=this.rotateDescr
+                  :show=this.showDescr
                 >
                 </canvaDescr>
 
@@ -568,8 +569,6 @@ export default{
     addimg () {
       let img = document.getElementsByClassName('q-item-image')[0]
       let imgURL = img.src
-      console.log(img)
-      console.log(imgURL)
       this.background = imgURL
       this.bgImages.push({
         url: imgURL
@@ -578,8 +577,6 @@ export default{
     addPhoto () {
       let img = document.getElementsByClassName('q-item-image')[0]
       let imgURL = img.src
-      console.log(img)
-      console.log(imgURL)
       this.oatherPhoto = imgURL
       this.imagestyle = true
       this.oatherImages.push({

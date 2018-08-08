@@ -443,11 +443,9 @@ export default{
   mounted: function () {
     this.bgImages = GLOBAL.posters
     this.oatherImages = GLOBAL.oatherImages
-    // console.log(GLOBAL.checkPoster)
     let _this = this
     this.bgImages.forEach(function (item, i, arr) {
       if (item.id === GLOBAL.checkPoster) {
-        // console.log(item.url)
         _this.background = item.url
         _this.area = item.title
         _this.fontFamily = item.fontFamily
@@ -575,8 +573,6 @@ export default{
     addimg () {
       let img = document.getElementsByClassName('q-item-image')[0]
       let imgURL = img.src
-      console.log(img)
-      console.log(imgURL)
       this.background = imgURL
       this.bgImages.push({
         url: imgURL
@@ -585,8 +581,6 @@ export default{
     addPhoto () {
       let img = document.getElementsByClassName('q-item-image')[0]
       let imgURL = img.src
-      console.log(img)
-      console.log(imgURL)
       this.oatherPhoto = imgURL
       this.imagestyle = true
       this.oatherImages.push({

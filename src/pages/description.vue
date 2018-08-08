@@ -1,6 +1,7 @@
 <template>
     <div>
         <v-text ref="description"
+            v-if="show"
             @dragmove="moveDescr"
             @mouseover="cursordragOver"
             @mouseout="cursordragOut"
@@ -60,6 +61,10 @@ export default{
     rotation: {
       type: Number,
       default: 0
+    },
+    show: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
